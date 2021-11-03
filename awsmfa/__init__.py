@@ -83,6 +83,10 @@ def main():
                         type=str,
                         help="Provide MFA token as an argument",
                         required=False)
+    parser.add_argument('--source-identity',
+                        type=str,
+                        help="Provide source identity name as an argument",
+                        required=False)
     args = parser.parse_args()
 
     level = getattr(logging, args.log_level)
@@ -300,13 +304,18 @@ def get_credentials(short_term_name, lt_key_id, lt_access_key, args, config):
             log_error_and_exit(logger, "You must specify a role session name "
                                "via --role-session-name")
 
+        if args.source_identity is None:
+            log_error_and_exit(logger, "You must specify a source identity name "
+                               "via --source-identity")
+
         try:
             response = client.assume_role(
                 RoleArn=args.assume_role,
                 RoleSessionName=args.role_session_name,
                 DurationSeconds=args.duration,
                 SerialNumber=args.device,
-                TokenCode=mfa_token
+                TokenCode=mfa_token,
+                SourceIdentity=args.source_identity
             )
         except ClientError as e:
             log_error_and_exit(logger,

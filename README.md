@@ -167,6 +167,10 @@ Usage
 --role-session-name ROLE_SESSION_NAME
                         Friendly session name required when using --assume-
                         role. By default, this is your local username.
+--source-identity SOURCE_IDENTITY
+                        Provide source identity name. It can't be changed
+                        after it is set. By default, this is your local
+                        username.
 ```
 
 **Argument precedence**: Command line arguments take precedence over environment variables.
